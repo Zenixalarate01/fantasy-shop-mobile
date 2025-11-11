@@ -1,4 +1,6 @@
+import 'package:fantasy_shop_mobile/widgets/main_drawer.dart';
 import 'package:flutter/material.dart';
+import 'package:fantasy_shop_mobile/widgets/item_card.dart';
 
 class MyHomePage extends StatelessWidget {
   MyHomePage({super.key});
@@ -27,15 +29,13 @@ class MyHomePage extends StatelessWidget {
         // Judul aplikasi "Football News" dengan teks putih dan tebal.
         title: const Text(
           'Fantasy Shop',
-          style: TextStyle(
-            color: Colors.white,
-            fontFamily: 'LowresPixel',
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         // Warna latar belakang AppBar diambil dari skema warna tema aplikasi.
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
+
+      drawer: MainDrawer(),
       // Body halaman dengan padding di sekelilingnya.
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -67,7 +67,6 @@ class MyHomePage extends StatelessWidget {
                     child: Text(
                       'Welcome to Fantasy Shop!',
                       style: TextStyle(
-                        fontFamily: 'LowresPixel',
                         fontWeight: FontWeight.bold,
                         fontSize: 18.0,
                       ),
@@ -124,81 +123,10 @@ class InfoCard extends StatelessWidget {
         // Menyusun title dan content secara vertikal.
         child: Column(
           children: [
-            Text(
-              title,
-              style: const TextStyle(
-                fontFamily: 'LowresPixel',
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
             const SizedBox(height: 8.0),
-            Text(
-              content,
-              style: const TextStyle(
-                fontFamily: 'LowresPixel',
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            Text(content, style: const TextStyle(fontWeight: FontWeight.bold)),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class ItemCard extends StatelessWidget {
-  // Menampilkan kartu dengan ikon dan nama.
-
-  final ItemHomepage item;
-  final Color color;
-
-  const ItemCard({super.key, required this.item, required this.color});
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      // Menentukan warna latar belakang dari tema aplikasi.
-      color: Theme.of(context).colorScheme.secondary,
-      // Membuat sudut kartu melengkung.
-      borderRadius: BorderRadius.circular(12),
-
-      child: InkWell(
-        // Aksi ketika kartu ditekan.
-        onTap: () {
-          // Menampilkan pesan SnackBar saat kartu ditekan.
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-              SnackBar(
-                content: Text(
-                  "Kamu telah menekan tombol ${item.name}!",
-                  style: TextStyle(fontFamily: 'LowresPixel'),
-                ),
-              ),
-            );
-        },
-        // Container untuk menyimpan Icon dan Text
-        child: Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(color: color),
-          child: Center(
-            child: Column(
-              // Menyusun ikon dan teks di tengah kartu.
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(item.icon, color: Colors.white, size: 30.0),
-                const Padding(padding: EdgeInsets.all(3)),
-                Text(
-                  item.name,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontFamily: 'LowresPixel',
-                  ),
-                ),
-              ],
-            ),
-          ),
         ),
       ),
     );

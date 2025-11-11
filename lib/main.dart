@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fantasy_shop_mobile/menu.dart';
+import 'package:fantasy_shop_mobile/screens/menu.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,6 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
+        fontFamily: 'LowresPixel',
         colorScheme: ColorScheme.fromSwatch(
           primarySwatch: Colors.blue,
         ).copyWith(secondary: Colors.blueAccent[400]),

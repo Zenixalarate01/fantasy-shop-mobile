@@ -54,3 +54,33 @@ Jelaskan bagaimana kamu menambahkan navigasi untuk berpindah antar layar di apli
 Cara untuk menambahkan navigasi antar layar yaitu menggunakan navigator. Ketika tombol ditekan, nanti push() akan membuka halaman
 baru dengan MaterialPageRoute dan pop untuk kembali. Navigator ini bekerja seperti stack sehingga halaman dapat ditambah atau
 dihapus sesuai urutan.
+
+
+Tugas 8
+Jelaskan perbedaan antara Navigator.push() dan Navigator.pushReplacement() pada Flutter. Dalam kasus apa sebaiknya masing-masing digunakan pada aplikasi Football Shop kamu?
+Navigator.push() --> Menambahkan halaman baru di atas stack halaman
+Kasus: Saat pengguna tetap boleh kembali ke halaman sebelumnya seperti membuka form atau detail produk
+
+Navigator.pushReplacement() --> Mengganti halaman saat ini dengan halaman baru
+Kasus: Saat navigasi ke halaman utama dan tidak ingin kembali ke halaman sebelumnya seperti pindah menu lewat drawer
+
+Bagaimana kamu memanfaatkan hierarchy widget seperti Scaffold, AppBar, dan Drawer untuk membangun struktur halaman yang konsisten di seluruh aplikasi?
+
+
+Dalam konteks desain antarmuka, apa kelebihan menggunakan layout widget seperti Padding, SingleChildScrollView, dan ListView saat menampilkan elemen-elemen form? Berikan contoh penggunaannya dari aplikasi kamu.
+Kelebihan penggunaan Padding, SingleChildScrollView, dan ListView yaitu:
+
+Padding dapat memberikan jarak antara elemen sehingga terlihat tidak menempel
+contoh penggunaan: Di form, tiap field memiliki jarak agar terlihat tidak menempel. Di home (menu) juga elemet my product, create item, dan
+all item terlihat memiliki jarak
+
+SingleChildScrollView membuat halaman bisa di scroll
+contoh penggunaan: Di form, kita menggunakannya karena urutan pengisian semua field di form it vertikal, jadi penggunaan
+SingleChildScrollVIew ini sangat membantu dalam bentuk tampilan
+
+ListView menampilkan daftar widget dalam scroll otomatis
+contoh penggunaan: Menu Drawer dan list produk
+
+Bagaimana kamu menyesuaikan warna tema agar aplikasi Football Shop memiliki identitas visual yang konsisten dengan brand toko?
+Cara saya menyesuaikan warna tema football shop saya yaitu mencari 1 warna dasar, di kasus ini saya memilih warna ungu. Tidak hanya itu,
+saya juga memakai website untuk sebagai color generator untuk membantu dalam menentukan warna yang cocok dengan warna dasar saya.
