@@ -84,3 +84,57 @@ contoh penggunaan: Menu Drawer dan list produk
 Bagaimana kamu menyesuaikan warna tema agar aplikasi Football Shop memiliki identitas visual yang konsisten dengan brand toko?
 Cara saya menyesuaikan warna tema football shop saya yaitu mencari 1 warna dasar, di kasus ini saya memilih warna ungu. Tidak hanya itu,
 saya juga memakai website untuk sebagai color generator untuk membantu dalam menentukan warna yang cocok dengan warna dasar saya.
+
+
+
+Tugas 9
+Jelaskan mengapa kita perlu membuat model Dart saat mengambil/mengirim data JSON? Apa konsekuensinya jika langsung memetakan Map<String, dynamic> tanpa model (terkait validasi tipe, null-safety, maintainability)?
+- Alasannya yaitu untuk memvalidasi tipe data, Null-Safety, dan Maintainability. Validasi tipe data Model Dart dapat memastikan setiap field memiliki tipe yang sesuai, misal String, double, atau bool. Hal ini membantu mendeteksi kesalahan sejak awal. Untuk Null-safety, dengan model, kita bisa menentukan field mana yang boleh null dan mana yang wajib ada, sehingga mengurangi potensi crash. Maintainability membuat kode model lebih rapi dan mudah dirawat. Semua mapping JSON ke objek Dart sudah tersentralisasi di model, yang memudahkan refactoring atau perubahan API.
+Konsekuensi jika langsung menggunakan Map<String, dynamic> tanpa model:
+- Risiko typo atau field yang tidak ada di JSON
+- Tidak ada jaminan tipe sehingga rentan bug
+- Sulit membaca kode, terutama untuk proyek besar.
+
+
+Apa fungsi package http dan CookieRequest dalam tugas ini? Jelaskan perbedaan peran http vs CookieRequest.
+- http
+http merupakan library dasar untuk melakukan HTTP request seperti GET, POST, PUT, DELETE. http tidak secara otomatis menangani session/cookie. Sehingga cocok untuk API stateless.
+
+- CookieRequest (package: pbp_django_auth)
+CookieRequest merupakan turunan http client yang sudah mengelola cookie secara otomatis. package ini akan menyimpan session login Django di cookie. CookieRequest dapat dipakai di banyak widget tanpa harus login ulang. misalnya ketika login di satu page, page lain bisa langsung mengakses API yang butuh autentikasi.
+
+
+Jelaskan mengapa instance CookieRequest perlu untuk dibagikan ke semua komponen di aplikasi Flutter.
+- Karena semua widget yang butuh data login atau akses API aman harus pakai session yang sama. Jika tidak dibagikan maka setiap widget akan membuat request baru yang membuat session hilang sehingga request gagal karena tidak terautentikasi. Solusinya yaitu menggunakan Provider agar semua widget dapat akses session login yang sama.
+
+
+
+Jelaskan konfigurasi konektivitas yang diperlukan agar Flutter dapat berkomunikasi dengan Django. Mengapa kita perlu menambahkan 10.0.2.2 pada ALLOWED_HOSTS, mengaktifkan CORS dan pengaturan SameSite/cookie, dan menambahkan izin akses internet di Android? Apa yang akan terjadi jika konfigurasi tersebut tidak dilakukan dengan benar?
+Agar Flutter bisa berkomunikasi dengan Django, kita perlu menambahkan 10.0.2.2 ke ALLOWED_HOSTS, mengaktifkan CORS, mengatur secure cookie, dan memberi izin internet di Android supaya request dan session login bisa berjalan. Jika konfigurasinya salah, request bisa ditolak, cookie tidak tersimpan, dan autentikasi gagal. Dengan pengaturan yang benar, Flutter dapat mengirim dan menerima data JSON serta menggunakan session login secara konsisten di semua widget.
+
+
+Jelaskan mekanisme pengiriman data mulai dari input hingga dapat ditampilkan pada Flutter.
+- User input di Flutter seperti input form, nanti inputnya akan dikonversi menjadi JSON yang akan dikirim ke Django lewat CookieRequest.post. Django menerima request tersebut lalu akan memvalidasi form / data. Data disimpan di database lalu akan direspon oleh Django dengan JSON/status sukses. Flutter FutureBuilder/provider menerima JSON lalu mapping ke model Dart ItemEntry kemudian ditampilkan.
+
+
+Jelaskan mekanisme autentikasi dari login, register, hingga logout. Mulai dari input data akun pada Flutter ke Django hingga selesainya proses autentikasi oleh Django dan tampilnya menu pada Flutter.
+1. Register
+Flutter mengirim username & password ke Django di aplikasi authentikasi. Django validasi form lalu menyimpan user kemudian dikembalikan status sukses. Terakhir, flutter menampilkan snack bar / redirect ke login.
+
+2. Login
+Flutter mengirim username & password ke views authenticate django. Jika benar maka Django akan membuat session cookie.Flutter menyimpan session via CookieRequest yang akan digunakan untuk semua request berikutnya pakai session.
+
+3. Logout
+Flutter request ke Django di aplikasi authenticate yang akan melakukan delete session cookie. Sehingga Flutter reset state login lalu redirect ke login page.
+
+
+Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step! (bukan hanya sekadar mengikuti tutorial).
+- Membuat app authentication
+- Buat function untuk register, login, dan logout
+- Melalukan git add, commit, dan push ke PWS untuk base 
+- Melakukan integrasi authentication ke flutter dengan membuat page untuk registrasi dan login
+- Membuat model kustom untuk model flutter
+- Membuat List Item, Card untuk item, dan Detail untuk item
+- Menambahkan back button untuk semua yang dibutuhkan (myproduct, dan item detail)
+- Membuat integrasi form untuk flutter
+- Membuat filter untuk My product

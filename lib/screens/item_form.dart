@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fantasy_shop_mobile/widgets/main_drawer.dart';
+import 'dart:convert';
+import 'package:provider/provider.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:fantasy_shop_mobile/screens/menu.dart';
 
 class ItemForm extends StatefulWidget {
   const ItemForm({super.key});
@@ -41,11 +45,18 @@ class ItemFormState extends State<ItemForm> {
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
     return Scaffold(
       appBar: AppBar(
         title: const Center(child: Text('Form Product')),
         backgroundColor: const Color.fromARGB(255, 177, 112, 227),
         foregroundColor: Colors.white,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
 
       drawer: MainDrawer(),
@@ -116,7 +127,7 @@ class ItemFormState extends State<ItemForm> {
                       borderRadius: BorderRadius.circular(5.0),
                     ),
                   ),
-                  value: _category,
+                  initialValue: _category,
                   items: _categories
                       .map(
                         (cat) => DropdownMenuItem(
@@ -146,7 +157,7 @@ class ItemFormState extends State<ItemForm> {
                   ),
                   onChanged: (value) {
                     setState(() {
-                      _price = int.tryParse(value!) ?? 0;
+                      _price = int.tryParse(value) ?? 0;
                     });
                   },
                   validator: (value) {
@@ -200,42 +211,53 @@ class ItemFormState extends State<ItemForm> {
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
+                      backgroundColor: WidgetStateProperty.all(
                         const Color.fromARGB(255, 86, 44, 149),
                       ),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: const Text('Produk berhasil tersimpan'),
-                              content: SingleChildScrollView(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text('Nama: $_title'),
-                                    Text('Kategori: $_category'),
-                                    Text('Harga: $_price'),
-                                    Text('Featured: $_isFeatured'),
-                                  ],
+                        final request = context.read<CookieRequest>();
+
+                        final response = await request.postJson(
+                          "http://127.0.0.1:8000/create-flutter/",
+                          jsonEncode({
+                            "name": _title,
+                            "description": _content,
+                            "price": _price,
+                            "thumbnail": _thumbnail,
+                            "category": _category,
+                            "is_featured": _isFeatured,
+                          }),
+                        );
+
+                        if (context.mounted) {
+                          if (response['status'] == 'success') {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("Item successfully saved!"),
+                              ),
+                            );
+
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MyHomePage(),
+                              ),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  "Something went wrong, please try again.",
                                 ),
                               ),
-                              actions: [
-                                TextButton(
-                                  child: const Text('OK'),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                    _resetForm();
-                                  },
-                                ),
-                              ],
                             );
-                          },
-                        );
+                          }
+                        }
                       }
                     },
+
                     child: const Text(
                       "Save",
                       style: TextStyle(color: Colors.white),
