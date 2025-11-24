@@ -17,10 +17,10 @@ class MyHomePage extends StatelessWidget {
   ];
 
   final List<Color> itemColors = [
-    Colors.blueAccent,
-    Colors.greenAccent,
-    Colors.redAccent,
-    Colors.deepPurple,
+    const Color.fromARGB(255, 24, 137, 67),
+    const Color.fromARGB(255, 239, 11, 37),
+    const Color.fromARGB(255, 202, 247, 21),
+    const Color.fromARGB(255, 150, 69, 59),
   ];
 
   @override
@@ -36,7 +36,7 @@ class MyHomePage extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
 
-      drawer: MainDrawer(),
+      endDrawer: MainDrawer(),
       // Body halaman dengan padding di sekelilingnya.
       body: SingleChildScrollView(
         child: Padding(

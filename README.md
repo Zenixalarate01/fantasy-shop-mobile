@@ -65,7 +65,9 @@ Navigator.pushReplacement() --> Mengganti halaman saat ini dengan halaman baru
 Kasus: Saat navigasi ke halaman utama dan tidak ingin kembali ke halaman sebelumnya seperti pindah menu lewat drawer
 
 Bagaimana kamu memanfaatkan hierarchy widget seperti Scaffold, AppBar, dan Drawer untuk membangun struktur halaman yang konsisten di seluruh aplikasi?
-
+Scaffold digunakan sebagai kerangka utama tiap halaman
+AppBar akan digunakan sebagai header halaman, tombol back, dan untuk warna background header
+Drawer di aplikasi ini digunakan untuk sebagai shortcut untuk tidak perlu lagi kembali ke menu 
 
 Dalam konteks desain antarmuka, apa kelebihan menggunakan layout widget seperti Padding, SingleChildScrollView, dan ListView saat menampilkan elemen-elemen form? Berikan contoh penggunaannya dari aplikasi kamu.
 Kelebihan penggunaan Padding, SingleChildScrollView, dan ListView yaitu:

@@ -13,167 +13,148 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   final _usernameController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _confirmPasswordController = TextEditingController();
+  final _fullNameController = TextEditingController();
+  final _phoneController = TextEditingController();
+  final _password1Controller = TextEditingController();
+  final _password2Controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Register'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ),
+      appBar: AppBar(title: const Text("Register")),
       body: Center(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16),
           child: Card(
             elevation: 8,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12.0),
+              borderRadius: BorderRadius.circular(12),
             ),
             child: Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(20),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
+                children: [
                   const Text(
-                    'Register',
-                    style: TextStyle(
-                      fontSize: 24.0,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    "Create Account",
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
-                  const SizedBox(height: 30.0),
-                  TextFormField(
+
+                  const SizedBox(height: 25),
+
+                  // Username
+                  TextField(
                     controller: _usernameController,
                     decoration: const InputDecoration(
-                      labelText: 'Username',
-                      hintText: 'Enter your username',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                      ),
-                      contentPadding: EdgeInsets.symmetric(
-                        horizontal: 12.0,
-                        vertical: 8.0,
-                      ),
+                      labelText: "Username",
+                      border: OutlineInputBorder(),
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your username';
-                      }
-                      return null;
-                    },
                   ),
-                  const SizedBox(height: 12.0),
-                  TextFormField(
-                    controller: _passwordController,
+                  const SizedBox(height: 12),
+
+                  // Full name
+                  TextField(
+                    controller: _fullNameController,
                     decoration: const InputDecoration(
-                      labelText: 'Password',
-                      hintText: 'Enter your password',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                      ),
-                      contentPadding: EdgeInsets.symmetric(
-                        horizontal: 12.0,
-                        vertical: 8.0,
-                      ),
+                      labelText: "Full Name",
+                      border: OutlineInputBorder(),
                     ),
-                    obscureText: true,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your password';
-                      }
-                      return null;
-                    },
                   ),
-                  const SizedBox(height: 12.0),
-                  TextFormField(
-                    controller: _confirmPasswordController,
+                  const SizedBox(height: 12),
+
+                  // Phone
+                  TextField(
+                    controller: _phoneController,
                     decoration: const InputDecoration(
-                      labelText: 'Confirm Password',
-                      hintText: 'Confirm your password',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                      ),
-                      contentPadding: EdgeInsets.symmetric(
-                        horizontal: 12.0,
-                        vertical: 8.0,
-                      ),
+                      labelText: "Phone",
+                      border: OutlineInputBorder(),
                     ),
-                    obscureText: true,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please confirm your password';
-                      }
-                      return null;
-                    },
                   ),
-                  const SizedBox(height: 24.0),
+                  const SizedBox(height: 12),
+
+                  // Password 1
+                  TextField(
+                    controller: _password1Controller,
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                      labelText: "Password",
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+
+                  // Password 2
+                  TextField(
+                    controller: _password2Controller,
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                      labelText: "Confirm Password",
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+
+                  const SizedBox(height: 24),
+
+                  // Submit button
                   ElevatedButton(
                     onPressed: () async {
                       String username = _usernameController.text;
-                      String password1 = _passwordController.text;
-                      String password2 = _confirmPasswordController.text;
+                      String fullName = _fullNameController.text;
+                      String phone = _phoneController.text;
+                      String password1 = _password1Controller.text;
+                      String password2 = _password2Controller.text;
 
                       final response = await request.postJson(
                         "https://dylan-pirade-fantasyshop.pbp.cs.ui.ac.id/auth/register/",
                         jsonEncode({
                           "username": username,
+                          "full_name": fullName,
+                          "phone": phone,
                           "password1": password1,
                           "password2": password2,
                         }),
                       );
-                      if (context.mounted) {
-                        if (response['status'] == 'success') {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Successfully registered!'),
-                            ),
-                          );
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const LoginPage(),
-                            ),
-                          );
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Failed to register!'),
-                            ),
-                          );
-                        }
+
+                      if (!context.mounted) return;
+
+                      if (response["status"] == true) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(response["message"])),
+                        );
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (_) => const LoginPage()),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(response["message"].toString()),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      minimumSize: Size(double.infinity, 50),
-                      backgroundColor: Theme.of(context).colorScheme.primary,
-                      padding: const EdgeInsets.symmetric(vertical: 16.0),
+                      minimumSize: const Size(double.infinity, 50),
                     ),
-                    child: const Text('Register'),
+                    child: const Text("Register"),
                   ),
-                  const SizedBox(height: 36.0),
+
+                  const SizedBox(height: 16),
+
                   GestureDetector(
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) => const LoginPage(),
-                        ),
+                        MaterialPageRoute(builder: (_) => const LoginPage()),
                       );
                     },
                     child: Text(
-                      'Already have an account? sign in',
+                      "Already have an account? Login",
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.primary,
-                        fontSize: 16.0,
                       ),
                     ),
                   ),

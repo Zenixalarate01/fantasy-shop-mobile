@@ -25,7 +25,6 @@ class ItemEntryCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Thumbnail
                 ClipRRect(
                   borderRadius: BorderRadius.circular(6),
                   child: Image.network(

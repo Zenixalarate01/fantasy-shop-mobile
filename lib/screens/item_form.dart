@@ -220,7 +220,7 @@ class ItemFormState extends State<ItemForm> {
                         final request = context.read<CookieRequest>();
 
                         final response = await request.postJson(
-                          "http://127.0.0.1:8000/create-flutter/",
+                          "https://dylan-pirade-fantasyshop.pbp.cs.ui.ac.id/create-flutter/",
                           jsonEncode({
                             "name": _title,
                             "description": _content,
